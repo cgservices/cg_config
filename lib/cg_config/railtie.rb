@@ -20,17 +20,20 @@ module CgConfig
       CgConfig.const_set('CG_CONFIG_FOLDER', '/config/yml') unless CgConfig.constants.include?('CG_CONFIG_FOLDER')
 
       puts "Loading yml config files from #{app.root}#{CgConfig::CG_CONFIG_FOLDER}..."
-      Dir.glob("#{app.root}/#{CgConfig::CG_CONFIG_FOLDER}/*.yml") do |yml_file|
 
-        yml_config = YAML.load_file(yml_file)
-        env_config = yml_config.has_key?(Rails.env) ? yml_config[Rails.env] : yml_config
-        const_name = File.basename(yml_file, ".yml").upcase
-
-        puts "Setting #{const_name}"
-
-        CgConfig.const_set(const_name, self.recursive_symbolize_keys(env_config))
+      Rails.application.ordered_railties.each do |railtie|
+        if railtie.respond_to?(:paths) && (path = railtie.root.to_s + CgConfig::CG_CONFIG_FOLDER)
+          Dir.glob(path + '/*.yml') do |yml_file|
+            yml_config = YAML.load_file(yml_file)
+            env_config = yml_config.has_key?(Rails.env) ? yml_config[Rails.env] : yml_config
+            const_name = File.basename(yml_file, ".yml").upcase
+            puts "Setting #{const_name}"
+            CgConfig.const_set(const_name, self.recursive_symbolize_keys(env_config))
+          end
+        end
       end
     end
+
   end
 end
 
