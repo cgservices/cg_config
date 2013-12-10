@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = 'cg_config'
   gem.require_paths = ['lib']
-  gem.version       = "0.0.2"
+  gem.version       = "0.0.3"
 
   gem.add_development_dependency('rake', ['>= 0'])
   gem.add_development_dependency('rspec', ['>= 0'])
