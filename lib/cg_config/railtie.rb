@@ -18,7 +18,7 @@ module CgConfig
 
     initializer "cg_config_railtie.configure_rails_initialization" do |app|
       CgConfig.const_set('CG_CONFIG_FOLDER', '/config/yml') unless CgConfig.constants.include?('CG_CONFIG_FOLDER')
-      Rails.application.ordered_railties.each do |railtie|
+      Rails.application.railties.each do |railtie|
         if railtie.respond_to?(:paths) && (path = railtie.root.to_s + CgConfig::CG_CONFIG_FOLDER)
           Dir.glob(path + '/*.yml') do |yml_file|
             yml_config = YAML.load_file(yml_file)
