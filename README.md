@@ -3,7 +3,7 @@ Gem simplify configs in CG Projects.
 
 ## Installation
 ### In Gemfile
-gem 'cg_config', :git => "git@github.com:cgservices/digital_codes.git"
+gem 'cg_config', :git => "git@github.com:cgservices/cg_config.git"
 
 ## Usage
 The gem looks in config/yml for all yml files and loads them into CgConfig::[FILENAME] as a hash with symbols as keys
