@@ -18,7 +18,7 @@ module CgConfig
 
     def load_yml_from_path(path)
       Dir.glob(path + '/*.yml') do |yml_file|
-        yml_config = YAML.load_file(yml_file)
+        yml_config = YAML.load(ERB.new(File.read(yml_file)).result)
         env_config = yml_config.has_key?(Rails.env) ? yml_config[Rails.env] : yml_config
         const_name = File.basename(yml_file, ".yml").upcase
         CgConfig.const_set(const_name, self.recursive_symbolize_keys(env_config))
@@ -30,6 +30,7 @@ module CgConfig
       # Load yml files from Application
       path = Rails.application.root.to_s + CgConfig::CG_CONFIG_FOLDER
       load_yml_from_path(path)
+
 
       # Load yml files from railties
       Rails.application.railties.each do |railtie|
