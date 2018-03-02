@@ -21,7 +21,9 @@ module CgConfig
         yml_config = YAML.load(ERB.new(File.read(yml_file)).result)
         env_config = yml_config.has_key?(Rails.env) ? yml_config[Rails.env] : yml_config
         const_name = File.basename(yml_file, ".yml").upcase
-        CgConfig.const_set(const_name, self.recursive_symbolize_keys(env_config))
+        unless Object.const_defined? "CgConfig::#{const_name}"
+          CgConfig.const_set(const_name, self.recursive_symbolize_keys(env_config))
+        end
       end
     end
 
