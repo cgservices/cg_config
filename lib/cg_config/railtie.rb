@@ -18,7 +18,7 @@ module CgConfig
 
     def load_yml_from_path(path)
       Dir.glob(path + '/*.yml') do |yml_file|
-        yml_config = YAML.load(ERB.new(File.read(yml_file), aliases: true).result)
+        yml_config = YAML.unsafe_load(ERB.new(File.read(yml_file)).result)
         env_config = yml_config.has_key?(Rails.env) ? yml_config[Rails.env] : yml_config
         const_name = File.basename(yml_file, ".yml").upcase
         unless Object.const_defined? "CgConfig::#{const_name}"
