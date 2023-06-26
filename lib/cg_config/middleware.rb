@@ -9,7 +9,7 @@ module CgConfig
       Rails.application.railties.each do |railtie|
         if railtie.respond_to?(:paths) && (path = railtie.root.to_s + CgConfig::CG_CONFIG_FOLDER)
           Dir.glob(path + '/*.yml') do |yml_file|
-            yml_config = YAML.load_file(yml_file)
+            yml_config = YAML.load_file(yml_file, aliases: true)
             env_config = yml_config.has_key?(Rails.env) ? yml_config[Rails.env] : yml_config
             const_name = File.basename(yml_file, ".yml").upcase
             CgConfig.const_set(const_name, self.recursive_symbolize_keys(env_config))
