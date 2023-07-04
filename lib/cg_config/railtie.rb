@@ -19,7 +19,7 @@ module CgConfig
     def load_yml_from_path(path)
       Dir.glob(path + '/*.yml') do |yml_file|
         begin
-          yml_config = YAML.unsafe_load(ERB.new(File.read(yml_file)).result)
+          yml_config = YAML.load(ERB.new(File.read(yml_file)).result, aliases: true)
         rescue ArgumentError
           yml_config = YAML.load(ERB.new(File.read(yml_file)).result)
         end

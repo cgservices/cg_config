@@ -10,7 +10,7 @@ module CgConfig
         if railtie.respond_to?(:paths) && (path = railtie.root.to_s + CgConfig::CG_CONFIG_FOLDER)
           Dir.glob(path + '/*.yml') do |yml_file|
             begin
-              yml_config = YAML.unsafe_load(File.read(yml_file))
+              yml_config = YAML.load(source, aliases: true)[Rails.env]
             rescue ArgumentError
               yml_config = YAML.load(File.read(yml_file))
             end
